@@ -1,1 +1,1 @@
-gradio
+streamlit
