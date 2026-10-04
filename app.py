@@ -410,16 +410,44 @@ def run_agent(user_message):
     # -----------------------------------------------------
     # CHECK FOR TOOL CALLS
     # -----------------------------------------------------
+    # CHECK FOR TOOL CALLS
 
     function_calls = response.function_calls
 
     if not function_calls:
-        return response.text
+        return response.text or "No response received."
 
-    # Add the model's tool-call response
     contents.append(response.candidates[0].content)
 
-    # -----------------------------------------------------
+    function_response_parts = []
+
+    for function_call in function_calls:
+        tool_name = function_call.name
+        tool_args = function_call.args or {}
+
+        result = execute_tool(tool_name, tool_args)
+
+        function_response_parts.append(
+            types.Part.from_function_response(
+                name=tool_name,
+                response={"result": result}
+            )
+        )
+
+    contents.append(
+        types.Content(
+            role="user",
+            parts=function_response_parts
+        )
+    )
+
+    final_response = client.models.generate_content(
+        model="gemini-3.8-flash",
+        contents=contents,
+        config=config
+    )
+
+    return final_response.text or "Task completed." -----------------------------------------------------
     # EXECUTE EACH TOOL
     # -----------------------------------------------------
 
