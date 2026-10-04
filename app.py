@@ -35,7 +35,7 @@ def get_api_key():
 
 
 API_KEY = get_api_key()
-MODEL = "gemini-2.5-flash"
+MODEL = "gemini-3.8-flash"
 
 if not API_KEY:
     st.error(
