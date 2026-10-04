@@ -41,7 +41,7 @@ client = genai.Client(api_key=API_KEY)
 
 # Change this only if this model is unavailable
 # for your API key.
-MODEL = "gemini-2.5-flash"
+MODEL = "gemini-3.8-flash"
 
 
 # ==========================================
