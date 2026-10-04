@@ -434,16 +434,16 @@ def run_agent(user_message):
             tool_name,
             tool_args
         )
+function_response_parts.append(
+    types.Part.from_function_response(
+        name=tool_name,
+        response={
+            "result": result
+        }
+    )
+)
 
-        function_response_parts.append(
-            types.Part.from_function_response(
-                name=tool_name,
-                response={
-                    "result": result
-                },
-                id=function_call.id
-            )
-        )
+        
 
     # -----------------------------------------------------
     # SEND TOOL RESULTS BACK TO GEMINI
